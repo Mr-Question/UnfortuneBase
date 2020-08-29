@@ -16,6 +16,8 @@ add_library               (${PROJECT_NAME} INTERFACE)
 target_sources            (${PROJECT_NAME} INTERFACE ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} INTERFACE ${PROJECT_ROOT_DIR})
 
+set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_ROOT_DIR} PARENT_SCOPE)
+
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Workaround for header-only libraries to display source files in IDEs
