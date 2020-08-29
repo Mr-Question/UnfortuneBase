@@ -12,3 +12,5 @@ The following functionality is provided:
 * scaling point sets by given factor;
 * iterating through triangles and links of meshes represented by half-edge data structure;
 * adding triangles to mesh, performing edge-flip operation.
+
+Until certain issues and actual checks, supposed to be cross-platform.
