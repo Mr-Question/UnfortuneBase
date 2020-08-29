@@ -26,36 +26,39 @@ public:
   // function : Add
   // purpose  :
   // =======================================================================
-  static void Add(
+  static BndBox Add(
     const BndBox&      theBox,
     std::deque<Point>& thePoints,
     const Type         theFrameType)
   {
+    BndBox aBox;
     switch (theFrameType)
     {
     case Triangle:
-      addFrameTriangle (theBox, thePoints);
+      aBox = addFrameTriangle (theBox, thePoints);
       break;
 
     case Rectangle:
-      addFrameRectangle (theBox, thePoints);
+      aBox = addFrameRectangle (theBox, thePoints);
       break;
 
     case WidthCutTriangle:
-      addFrameWidthCutTriangle (theBox, thePoints);
+      aBox = addFrameWidthCutTriangle (theBox, thePoints);
       break;
 
     case WidthCutRectangle:
-      addFrameWidthCutRectangle (theBox, thePoints);
+      aBox = addFrameWidthCutRectangle (theBox, thePoints);
       break;
 
     case Grid:
-      addFrameGrid (theBox, thePoints);
+      aBox = addFrameGrid (theBox, thePoints);
       break;
 
     default:
       break;
     }
+
+    return aBox;
   }
 
 private:
@@ -64,7 +67,7 @@ private:
   // function : addFrameTriangle
   // purpose  :
   // =======================================================================
-  static void addFrameTriangle(
+  static BndBox addFrameTriangle(
     const BndBox&      theBox,
     std::deque<Point>& thePoints)
   {
@@ -88,13 +91,20 @@ private:
     thePoints.push_back (Point {
       (theBox.Corners.Max.Coord.X + aDeltaSum),
       (theBox.Corners.Min.Coord.Y - aDeltaMin)});
+
+    BndBox aBox = theBox;
+    aBox.AddPoint (thePoints[thePoints.size () - 1]);
+    aBox.AddPoint (thePoints[thePoints.size () - 2]);
+    aBox.AddPoint (thePoints[thePoints.size () - 3]);
+
+    return aBox;
   }
 
   // =======================================================================
   // function : addFrameRectangle
   // purpose  :
   // =======================================================================
-  static void addFrameRectangle(
+  static BndBox addFrameRectangle(
     const BndBox&      theBox,
     std::deque<Point>& thePoints)
   {
@@ -119,13 +129,21 @@ private:
       theBox.Corners.Max.Coord.X + aDX,
       theBox.Corners.Max.Coord.Y + aDY
     });
+
+    BndBox aBox = theBox;
+    aBox.AddPoint (thePoints[thePoints.size () - 1]);
+    aBox.AddPoint (thePoints[thePoints.size () - 2]);
+    aBox.AddPoint (thePoints[thePoints.size () - 3]);
+    aBox.AddPoint (thePoints[thePoints.size () - 4]);
+
+    return aBox;
   }
 
   // =======================================================================
   // function : addFrameWidthCutTriangle
   // purpose  :
   // =======================================================================
-  static void addFrameWidthCutTriangle(
+  static BndBox addFrameWidthCutTriangle(
     const BndBox&      theBox,
     std::deque<Point>& thePoints)
   {
@@ -144,13 +162,20 @@ private:
      (theBox.Corners.Min.Coord.X + theBox.Corners.Max.Coord.X) / 2.,
       theBox.Corners.Max.Coord.Y + aDY
     });
+
+    BndBox aBox = theBox;
+    aBox.AddPoint (thePoints[thePoints.size () - 1]);
+    aBox.AddPoint (thePoints[thePoints.size () - 2]);
+    aBox.AddPoint (thePoints[thePoints.size () - 3]);
+
+    return aBox;
   }
 
   // =======================================================================
   // function : addFrameWidthCutRectangle
   // purpose  :
   // =======================================================================
-  static void addFrameWidthCutRectangle(
+  static BndBox addFrameWidthCutRectangle(
     const BndBox&      theBox,
     std::deque<Point>& thePoints)
   {
@@ -174,13 +199,21 @@ private:
       theBox.Corners.Max.Coord.X,
       theBox.Corners.Max.Coord.Y + aDY
     });
+
+    BndBox aBox = theBox;
+    aBox.AddPoint (thePoints[thePoints.size () - 1]);
+    aBox.AddPoint (thePoints[thePoints.size () - 2]);
+    aBox.AddPoint (thePoints[thePoints.size () - 3]);
+    aBox.AddPoint (thePoints[thePoints.size () - 4]);
+
+    return aBox;
   }
 
   // =======================================================================
   // function : addFrameGrid
   // purpose  :
   // =======================================================================
-  static void addFrameGrid(
+  static BndBox addFrameGrid(
     const BndBox&      theBox,
     std::deque<Point>& thePoints)
   {
@@ -198,6 +231,7 @@ private:
         (theBox.Corners.Max.Coord.Y - theBox.Corners.Min.Coord.Y)
     };
 
+    BndBox aBox = theBox;
     for (int j = 0; j < aAuxSize; ++j)
     {
       for (int i = 0; i < aAuxSize; ++i)
@@ -213,8 +247,11 @@ private:
           aStartPoint.Coord.Y + j * aDelta[1]
         };
 
+        aBox.AddPoint       (aPoint);
         thePoints.push_back (aPoint);
       }
     }
+
+    return aBox;
   }
 };

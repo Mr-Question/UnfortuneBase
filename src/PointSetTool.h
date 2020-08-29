@@ -31,22 +31,10 @@ public:
   // =======================================================================
   static BndBox Box(const std::deque<Point>& thePoints)
   {
-    const double aDoubleMin = std::numeric_limits<double>::lowest();
-    const double aDoubleMax = std::numeric_limits<double>::max();
-
-    BndBox aBox {
-      Point {aDoubleMax, aDoubleMax},
-      Point {aDoubleMin, aDoubleMin}
-    };
-
+    BndBox aBox;
     for (size_t i = 0; i < thePoints.size(); ++i)
     {
-      const Point& aPoint = thePoints[i];
-      for (int i = 0; i < 2; ++i)
-      {
-        aBox.Corners.Min.Data[i] = std::min (aBox.Corners.Min.Data[i], aPoint.Data[i]);
-        aBox.Corners.Max.Data[i] = std::max (aBox.Corners.Max.Data[i], aPoint.Data[i]);
-      }
+      aBox.AddPoint (thePoints[i]);
     }
 
     return aBox;
@@ -56,7 +44,7 @@ public:
   // function : Scale
   // purpose  :
   // =======================================================================
-  static void Scale(
+  static BndBox Scale(
     std::deque<Point>& thePoints,
     const double       theScale,
     const BndBox&      theBox)
@@ -66,13 +54,18 @@ public:
       theScale / (theBox.Corners.Max.Coord.Y - theBox.Corners.Min.Coord.Y)
     };
 
-    std::for_each (thePoints.begin(), thePoints.end(), [&theBox, &aScale](
+    BndBox aBox;
+    std::for_each (thePoints.begin(), thePoints.end(), [&theBox, &aBox, &aScale](
       Point& thePoint)
     {
       for (int i = 0; i < 2; ++i)
       {
         thePoint.Data[i] = (thePoint.Data[i] - theBox.Corners.Min.Data[i]) * aScale.Data[i];
       }
+
+      aBox.AddPoint (thePoint);
     });
+
+    return aBox;
   }
 };

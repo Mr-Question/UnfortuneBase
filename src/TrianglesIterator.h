@@ -18,13 +18,24 @@ public:
   // function : Constructor
   // purpose  :
   // =======================================================================
-  TrianglesIterator (std::deque<HalfEdge>& theMesh)
+  TrianglesIterator (
+    std::deque<HalfEdge>& theMesh,
+    HalfEdge*             theSeedTriangle = nullptr)
     : myMesh (theMesh)
   {
-    for (size_t i = 0; i < myMesh.size () && myStack.empty (); ++i)
+    if (theSeedTriangle && !theSeedTriangle->IsFront)
     {
-      if (!myMesh[i].IsFront)
-        myStack.push (&myMesh[i]);
+      myStack.push (theSeedTriangle);
+    }
+    else
+    {
+      for (size_t i = 0; i < myMesh.size () && myStack.empty (); ++i)
+      {
+        if (!myMesh[i].IsFront)
+        {
+          myStack.push (&myMesh[i]);
+        }
+      }
     }
   }
 
@@ -66,7 +77,9 @@ public:
       aHalfEdge->IsVisited = true;
 
       HalfEdge* aOtherHalfEdge = aHalfEdge->HalfPtr;
-      if (!aOtherHalfEdge->IsFront && !aOtherHalfEdge->IsVisited)
+      if ( aOtherHalfEdge          &&
+          !aOtherHalfEdge->IsFront &&
+          !aOtherHalfEdge->IsVisited)
       {
         myStack.push (aOtherHalfEdge);
       }
