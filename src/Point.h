@@ -88,6 +88,17 @@ struct Point
   }
 
   // =======================================================================
+  // function : operator*
+  // purpose  :
+  // =======================================================================
+  Point& operator*=(const double theScale)
+  {
+    Data[0] *= theScale;
+    Data[1] *= theScale;
+    return *this;
+  }
+
+  // =======================================================================
   // function : operator-
   // purpose  :
   // =======================================================================
@@ -117,6 +128,17 @@ struct Point
   {
     Point aPoint = *this;
     aPoint /= theScale;
+    return aPoint;
+  }
+
+  // =======================================================================
+  // function : operator*
+  // purpose  :
+  // =======================================================================
+  Point operator*(const double theScale) const
+  {
+    Point aPoint = *this;
+    aPoint *= theScale;
     return aPoint;
   }
 

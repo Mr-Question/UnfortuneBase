@@ -64,6 +64,25 @@ struct Utils
   }
 
   // =======================================================================
+  // function : GenerateCircularXY
+  // purpose  :
+  // =======================================================================
+  static void GenerateCircularXY(
+    const int          theDimSize,
+    std::deque<Point>& thePoints)
+  {
+    for (int i = 0; i < theDimSize; ++i)
+    {
+      const double aAngle = i * 2. * M_PI / theDimSize;
+      const double aX = sin(aAngle);
+      const double aY = cos(aAngle);
+      const Point aPoint {aX, aY};
+
+      thePoints.push_back (aPoint);
+    }
+  }
+
+  // =======================================================================
   // function : ReadXY
   // purpose  :
   // =======================================================================

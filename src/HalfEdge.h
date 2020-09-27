@@ -13,12 +13,12 @@ struct HalfEdge
   // purpose  :
   // =======================================================================
   HalfEdge(const Node* theNode = nullptr)
-   : NodePtr (theNode)
-   , HalfPtr (nullptr)
-   , PrevPtr (nullptr)
-   , NextPtr (nullptr)
-   , IsFront (true)
-   , IsVisited (false)
+   : NodePtr   (theNode)
+   , HalfPtr   (nullptr)
+   , PrevPtr   (nullptr)
+   , NextPtr   (nullptr)
+   , IsFront   (true   )
+   , IsVisited (false  )
   {
   }
 
